@@ -1,26 +1,36 @@
 import re
 import funciones
+import random
 
 def validarCedula(pCedula: str):
     while True:
         if re.match(r"[\d]{1}-[\d]{4}-[\d]{4}", pCedula):
             return pCedula
         else:
-            pCedula = input("EROR: Cédula inválida, recuerde usar el siguente formato: 0-0000-0000\nIntente de nuevo: ")
+            pCedula = input("ERROR: Cédula inválida, recuerde usar el siguente formato: 0-0000-0000\nIntente de nuevo: ")
 
 def validarNombre(pNombre):
     while True:
         if re.match(r"[\w]+ [\w]+ [\w]+", pNombre):
             return pNombre
         else:
-            pNombre = input("EROR: Nombre inválida, se espera el formato Nombre Apellido1 Apellido2 (cuide los espacios)\nIntente de nuevo: ")
+            pNombre = input("ERROR: Nombre inválida, se espera el formato Nombre Apellido1 Apellido2 (cuide los espacios)\nIntente de nuevo: ")
+
+def validarGenero(pString: str):
+    while True:
+        if pString=="1":
+            return True
+        elif pString=="2":
+            return False
+        else:
+            pString = input("ERROR: Opción inválida, ingrese 1 o 2 (1: hombre, 2: mujer)\nIntente de nuevo: ")
 
 def validarBin(pString: str):
     while True:
         if pString in ["1", "2"]:
             return pString == "1"
         else:
-            pString = input("EROR: Opción inválida, ingrese 1 o 2 (1: si, 2: no)\nIntente de nuevo: ")
+            pString = input("ERROR: Opción inválida, ingrese 1 o 2 (1: si, 2: no)\nIntente de nuevo: ")
 
 def validarPersonalidad(pNumero):
     """
@@ -34,8 +44,37 @@ def validarPersonalidad(pNumero):
         if pNumero.isdigit():
             if int(pNumero)>=1 and int(pNumero)<= 16:
                 return int(pNumero)
+            else:
+                pNumero = input("Debe ingresar un numero de 1 a 16\nIntente de nuevo: ")
         else:
             pNumero = input("No ingresó un valor valido ya que no es un digito\nIntente de nuevo: ")
+
+def ESRegistrarDatos(pDicc):
+    cedula = validarCedula(input("Ingrese el número de cédula: "))
+    nombre = validarNombre(input("Ingrese el nombre: "))
+    genero = validarGenero(input("Es un hombre? (Ingrese 1=si, 2=no): "))
+    print(
+          "------Tipos de personalidades------"  
+          "\n1.INTJ"
+          "\n2.INTP"
+          "\n3.ENTJ"
+          "\n4.ENTP"
+          "\n5.INFJ"
+          "\n6.INFP"
+          "\n7.ENFJ"
+          "\n8.ENFP"
+          "\n9.ISTJ"
+          "\n10.ISFJ"
+          "\n11.ESTJ"
+          "\n12.ESFJ"
+          "\n13.ISTP"
+          "\n14.ISFP"
+          "\n15.ESTP"
+          "\n16.ESFP"
+          )
+    pDicc = funciones.registrarDatos(pDicc, cedula, nombre, genero)
+    print("Datos registrados exitosamente")
+    return pDicc
 
 def ESModificarDatos(pDicc):
     cedula = validarCedula(input("Ingrese el número de cédula a modificar: "))
@@ -63,9 +102,10 @@ def ESReportes(pDicc):
 
 def menu():
     menuDicc = {
-        1: ["Modificar Datos", ESModificarDatos],
-        2: ["Eliminar Datos", ESEliminarDatos],
-        3: ["Reportes", ESReportes]
+        1: ["Registrar Datos", ESRegistrarDatos],
+        2: ["Modificar Datos", ESModificarDatos],
+        3: ["Eliminar Datos", ESEliminarDatos],
+        4: ["Reportes", ESReportes]
     }
     personalidad = {}
     while True:
