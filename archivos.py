@@ -1,6 +1,7 @@
 #Importación de bibliotecas
 import pickle
 
+#Definición de funciones
 def graba(nomArchGrabar, varGuardar):
     """
     Funcionalidad: Graba un archivo

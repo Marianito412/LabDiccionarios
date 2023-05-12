@@ -1,7 +1,11 @@
+
+
+#Importación de bibliotecas
 import re
 import funciones
 import archivos
 
+#Definición de funciones
 def validarCedula(pCedula: str):
     """
     Funcionalidad: valida una cédula contra regex
@@ -146,13 +150,32 @@ def ESReportePersona(pDicc):
         print("La persona no existe")
 
 def ESReporteTotal(pDicc):
+    """
+    Funcionalidad: Muestra todas las personas en la base de datos
+    Entradas:
+    -pDicc(dict): El diccionario donde buscar
+    Salidas: NA
+    """
     for i in pDicc:
         funciones.reportePersona(pDicc, i)
 
 def SalirReporte(pDicc):
+    """
+    Funcionalidad: Muestra mensaje para regresar al menú principal
+    Entradas:
+    -pDicc(dict): El diccionario donde buscar
+    Salidas: NA
+    """
     print("Regresando a menu principal...")
 
 def ESReportes(pDicc):
+    """
+    Funcionalidad: Muestra menu de reportes
+    Entradas:
+    -pDicc(dict): El diccionario a analizar
+    Salidas:
+    -pDicc(dict): El diccionario analizado
+    """
     menuDicc = {
 
         1: ["Por personalidad", ESReportePersonalidades],
@@ -176,6 +199,13 @@ def ESReportes(pDicc):
     return pDicc
 
 def ESReportePersonalidades(pDicc):
+    """
+    Funcionalidad: Muestra la base de datos dividida por personalidad
+    Entradas:
+    -pDicc(dict): El diccionario donde buscar
+    Salidas:
+    -pDicc(dict): El diccionario analizado
+    """
     personalidades={1: "INTJ",2: "INTP",3:"ENTJ",4:"ENTP",5:"INFJ",6:"INFP",7:"ENFJ",8:"ENFP",9:"ISTJ",10:"ISFJ",11:"ESTJ",12:"ESFJ",13:"ISTP",14:"ISFP",15:"ESTP",16:"ESFP"}
     for i in personalidades:
         esPrimero=True
@@ -194,6 +224,13 @@ def ESReportePersonalidades(pDicc):
     return pDicc
 
 def ESPorCategorias(pDicc):
+    """
+    Funcionalidad: Muestra la base de datos dividida por categoria
+    Entradas:
+    -pDicc(dict): El diccionario donde buscar
+    Salidas:
+    -pDicc(dict): El diccionario analizado
+    """
     categorias={"Analistas": [1,2,3,4],"Diplomaticos": [5,6,7,8],"Centinelas":[9,10,11,12],"Exploradores":[13,14,15,16]}
     personalidades={1: "INTJ",2: "INTP",3:"ENTJ",4:"ENTP",5:"INFJ",6:"INFP",7:"ENFJ",8:"ENFP",9:"ISTJ",10:"ISFJ",11:"ESTJ",12:"ESFJ",13:"ISTP",14:"ISFP",15:"ESTP",16:"ESFP"}
     for i in categorias:
@@ -214,6 +251,11 @@ def ESPorCategorias(pDicc):
     return pDicc
 
 def menu():
+    """
+    Funcionalidad: Muestra menu principal
+    Entradas:NA
+    Salidas:NA
+    """
     personalidad = archivos.lee("personalidad") or {}
     ESRegistrarDatos(personalidad)
     while validarBin(input("Desea registrar más personas? (1: sí, 2: no): ")):
@@ -223,7 +265,8 @@ def menu():
         1: ["Registrar Datos", ESRegistrarDatos],
         2: ["Modificar Datos", ESModificarDatos],
         3: ["Eliminar Datos", ESEliminarDatos],
-        4: ["Reportes", ESReportes]
+        4: ["Reportes", ESReportes],
+        5: ["Salir", exit]
     }
     
     while True:
@@ -238,4 +281,5 @@ def menu():
         except KeyError:
             print("Opción inválida")
 
+#Programa principal
 menu()
