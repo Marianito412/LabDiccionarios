@@ -104,8 +104,11 @@ def ESModificarDatos(pDicc):
     nombre = validarNombre(input("Ingrese el nuevo nombre: "))
     personalidad = validarPersonalidad(input("Ingrese la nueva personalidad: "))
     if validarBin(input("Está segur@ que desea modificar este valor?\nIngrese 1 o 2 (1: sí, 2: no): ")):
-        pDicc = funciones.modificarDatos(pDicc, cedula, nombre, personalidad)
-        print("Datos modificados exitosamente")
+        try:
+            pDicc = funciones.modificarDatos(pDicc, cedula, nombre, personalidad)
+            print("Datos modificados exitosamente")
+        except:
+            print("La cédula solicitada no está registrada")
     else:
         print("Se canceló la modificación de los datos")
     return pDicc
@@ -120,8 +123,11 @@ def ESEliminarDatos(pDicc: dict):
     """
     cedula = validarCedula(input("Ingrese el número de cédula a eliminar: "))
     if validarBin(input("Está segur@ que desea eliminar esta persona?\nIngrese 1 o 2 (1: sí, 2: no): ")):
-        pDicc = funciones.eliminarDatos(pDicc, cedula)
-        print(f"Se eliminó exitosamente la persona con cédula {cedula}")
+        try:
+            pDicc = funciones.eliminarDatos(pDicc, cedula)
+            print(f"Se eliminó exitosamente la persona con cédula {cedula}")
+        except:
+            print("La cédula ingresada no existe en la base de datos")
     else:
         print("Se canceló la eliminación")
     return pDicc

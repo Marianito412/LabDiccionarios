@@ -1,9 +1,11 @@
 import random
 
 def registrarDatos(pDicc, pCedula, pNombre, pGenero):
-    personalidad = random.randint(1, 16)
-    pDicc[pCedula] = [pNombre, pGenero, personalidad]
-    print(pDicc)
+    if pCedula not in pDicc:
+        personalidad = random.randint(1, 16)
+        pDicc[pCedula] = [pNombre, pGenero, personalidad]
+    else:
+        print("Esta cédula ya se registró previamente")
     return pDicc
 
 def modificarDatos(pDicc, pCedula, pNombre, pPersonalidad):
