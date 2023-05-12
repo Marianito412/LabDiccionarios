@@ -57,9 +57,37 @@ def ESEliminarDatos(pDicc: dict):
         print("Se canceló la eliminación")
     return pDicc
 
+def ESReportePersona(pDicc):
+    cedula = validarCedula(input("Ingrese el número de cédula a eliminar: "))
+    persona = pDicc[cedula]
+    print(f"Nombre: {persona[0]}\nGénero: {'Hombre' if persona[1] else 'Mujer'}\nPersonalidad: {persona[2]}")
+
+def ESReporteTotal(pDicc):
+    ...
+
+def SalirReporte(pDicc):
+    print("Regresando a menu principal...")
+
 def ESReportes(pDicc):
-    print("Reporte")
-    return pDicc
+    menuDicc = {
+        1: ["Por personalidad", ESModificarDatos],
+        2: ["Por categoría", ESEliminarDatos],
+        3: ["Por persona", ESReportePersona],
+        4: ["Reporte total", ESReporteTotal],
+        5: ["Salir a menu", SalirReporte]
+    }
+    while True:
+        for key in menuDicc:
+            print(f"{key}. {menuDicc[key][0]}")
+        try:
+            opcion = int(input("Ingrese el número de su opción a elegir: "))
+            menuDicc[opcion][1](pDicc)
+            if opcion == 5:
+                break
+        except ValueError:
+            print("Por favor ingrese un número válido")
+        except KeyError:
+            print("Opción inválida")
 
 def menu():
     menuDicc = {
