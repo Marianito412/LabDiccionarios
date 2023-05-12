@@ -1,8 +1,15 @@
 import re
 import funciones
-import random
+import archivos
 
 def validarCedula(pCedula: str):
+    """
+    Funcionalidad: valida una cédula contra regex
+    Entradas:
+    -pCedula(str): la cedula a validar
+    Salidas:
+    -pCedula: la cédula si cumple con las validaciones
+    """
     while True:
         if re.match(r"[\d]{1}-[\d]{4}-[\d]{4}", pCedula):
             return pCedula
@@ -10,6 +17,13 @@ def validarCedula(pCedula: str):
             pCedula = input("ERROR: Cédula inválida, recuerde usar el siguente formato: 0-0000-0000\nIntente de nuevo: ")
 
 def validarNombre(pNombre):
+    """
+    Funcionalidad: valida un nombre contra regex
+    Entradas:
+    -pNombre(str): El nombre a validar
+    Salidas:
+    -pNombre: El nombre si cumple con las validaciones
+    """
     while True:
         if re.match(r"[\w]+ [\w]+ [\w]+", pNombre):
             return pNombre
@@ -17,6 +31,13 @@ def validarNombre(pNombre):
             pNombre = input("ERROR: Nombre inválida, se espera el formato Nombre Apellido1 Apellido2 (cuide los espacios)\nIntente de nuevo: ")
 
 def validarGenero(pString: str):
+    """
+    Funcionalidad: Valida una elección de género
+    Entradas:
+    -pString(str): La elección a validar
+    Salidas:
+    -return(bool): True si es hombre
+    """
     while True:
         if pString=="1":
             return True
@@ -26,6 +47,13 @@ def validarGenero(pString: str):
             pString = input("ERROR: Opción inválida, ingrese 1 o 2 (1: hombre, 2: mujer)\nIntente de nuevo: ")
 
 def validarBin(pString: str):
+    """
+    Funcionalidad: Valida un sí o no y retorna el binario
+    Entradas:
+    -pEntrada(str): Texto conteniendo sí o no
+    Salida:
+    return(bool): True si sí, False si no 
+    """
     while True:
         if pString in ["1", "2"]:
             return pString == "1"
@@ -50,6 +78,13 @@ def validarPersonalidad(pNumero):
             pNumero = input("No ingresó un valor valido ya que no es un digito\nIntente de nuevo: ")
 
 def ESRegistrarDatos(pDicc):
+    """
+    Funcionalidad: Registra una nueva persona
+    Entradas:
+    -pDicc(dict): El diccionario en el que agregar la nueva persona
+    Salidas:
+    -pDicc(dict): El diccionario modificado
+    """
     cedula = validarCedula(input("Ingrese el número de cédula: "))
     nombre = validarNombre(input("Ingrese el nombre: "))
     genero = validarGenero(input("Es un hombre? (Ingrese 1=si, 2=no): "))
@@ -58,6 +93,13 @@ def ESRegistrarDatos(pDicc):
     return pDicc
 
 def ESModificarDatos(pDicc):
+    """
+    Funcionalidad: Modifica una entrada en el diccionario
+    Entradas:
+    -pDicc(dict): El diccionario a modificar
+    Salidas:
+    -pDicc(dict): El diccionario modificado
+    """
     cedula = validarCedula(input("Ingrese el número de cédula a modificar: "))
     nombre = validarNombre(input("Ingrese el nuevo nombre: "))
     personalidad = validarPersonalidad(input("Ingrese la nueva personalidad: "))
@@ -69,6 +111,13 @@ def ESModificarDatos(pDicc):
     return pDicc
 
 def ESEliminarDatos(pDicc: dict):
+    """
+    Funcionalidad: Elimina una entrada en el diccionario
+    Entradas:
+    -pDicc(dict): El diccionario a modificar
+    Salidas:
+    -pDicc(dict): El diccionario sin el elemento modificado
+    """
     cedula = validarCedula(input("Ingrese el número de cédula a eliminar: "))
     if validarBin(input("Está segur@ que desea eliminar esta persona?\nIngrese 1 o 2 (1: sí, 2: no): ")):
         pDicc = funciones.eliminarDatos(pDicc, cedula)
@@ -78,12 +127,21 @@ def ESEliminarDatos(pDicc: dict):
     return pDicc
 
 def ESReportePersona(pDicc):
-    cedula = validarCedula(input("Ingrese el número de cédula a eliminar: "))
-    persona = pDicc[cedula]
-    print(f"Nombre: {persona[0]}\nGénero: {'Hombre' if persona[1] else 'Mujer'}\nPersonalidad: {persona[2]}")
+    """
+    Funcionalidad: Muestra la información de una persona
+    Entradas:
+    -pDicc(dict): El diccionario donde buscar
+    Salidas: NA
+    """
+    cedula = validarCedula(input("Ingrese el número de cédula a buscar: "))
+    try:
+        funciones.reportePersona(pDicc, cedula)
+    except:
+        print("La persona no existe")
 
 def ESReporteTotal(pDicc):
-    ...
+    for i in pDicc:
+        funciones.reportePersona(pDicc, i)
 
 def SalirReporte(pDicc):
     print("Regresando a menu principal...")
@@ -91,7 +149,7 @@ def SalirReporte(pDicc):
 def ESReportes(pDicc):
     menuDicc = {
         1: ["Por personalidad", ESModificarDatos],
-        2: ["Por categoría", ESEliminarDatos],
+        2: ["Por categoría", exit],
         3: ["Por persona", ESReportePersona],
         4: ["Reporte total", ESReporteTotal],
         5: ["Salir a menu", SalirReporte]
@@ -126,19 +184,25 @@ def ESReportes2(pDicc):
     return pDicc
 
 def menu():
+    personalidad = archivos.lee("personalidad") or {}
+    ESRegistrarDatos(personalidad)
+    while validarBin(input("Desea registrar más personas? (1: sí, 2: no): ")):
+        ESRegistrarDatos(personalidad)
+    archivos.graba("personalidad", personalidad)
     menuDicc = {
         1: ["Registrar Datos", ESRegistrarDatos],
         2: ["Modificar Datos", ESModificarDatos],
         3: ["Eliminar Datos", ESEliminarDatos],
         4: ["Reportes", ESReportes]
     }
-    personalidad = {}
+    
     while True:
         for key in menuDicc:
             print(f"{key}. {menuDicc[key][0]}")
         try:
             opcion = int(input("Ingrese el número de su opción a elegir: "))
             personalidad = menuDicc[opcion][1](personalidad)
+            archivos.graba("personalidad", personalidad)
         except ValueError:
             print("Por favor ingrese un número válido")
         except KeyError:
