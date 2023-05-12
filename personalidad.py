@@ -53,25 +53,6 @@ def ESRegistrarDatos(pDicc):
     cedula = validarCedula(input("Ingrese el número de cédula: "))
     nombre = validarNombre(input("Ingrese el nombre: "))
     genero = validarGenero(input("Es un hombre? (Ingrese 1=si, 2=no): "))
-    print(
-          "------Tipos de personalidades------"  
-          "\n1.INTJ"
-          "\n2.INTP"
-          "\n3.ENTJ"
-          "\n4.ENTP"
-          "\n5.INFJ"
-          "\n6.INFP"
-          "\n7.ENFJ"
-          "\n8.ENFP"
-          "\n9.ISTJ"
-          "\n10.ISFJ"
-          "\n11.ESTJ"
-          "\n12.ESFJ"
-          "\n13.ISTP"
-          "\n14.ISFP"
-          "\n15.ESTP"
-          "\n16.ESFP"
-          )
     pDicc = funciones.registrarDatos(pDicc, cedula, nombre, genero)
     print("Datos registrados exitosamente")
     return pDicc
@@ -97,6 +78,17 @@ def ESEliminarDatos(pDicc: dict):
     return pDicc
 
 def ESReportes(pDicc):
+    personalidades={1: "INTJ",2: "INTP",3:"ENTJ",4:"ENTP",5:"INFJ",6:"INFP",7:"ENFJ",8:"ENFP",9:"ISTJ",10:"ISFJ",11:"ESTJ",12:"ESFJ",13:"ISTP",14:"ISFP",15:"ESTP",16:"ESFP"}
+    for i in personalidades:
+        print(f"{i}. {personalidades[i]}")
+        for j in pDicc:
+            if i in pDicc[j]:
+                print("\n"
+                      f" ---Usuarios con personalidad {personalidades[i]} ---\n"
+                      f"    cedula: {j}\n"
+                      f"    nombre: {pDicc[j][0]}\n"
+                      f"    genero: {pDicc[j][1]}\n"
+                      )
     print("Reporte")
     return pDicc
 
