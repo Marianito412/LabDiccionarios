@@ -148,8 +148,9 @@ def SalirReporte(pDicc):
 
 def ESReportes(pDicc):
     menuDicc = {
-        1: ["Por personalidad", ESModificarDatos],
-        2: ["Por categoría", exit],
+
+        1: ["Por personalidad", ESReportePersonalidades],
+        2: ["Por categoría", ESPorCategorias],
         3: ["Por persona", ESReportePersona],
         4: ["Reporte total", ESReporteTotal],
         5: ["Salir a menu", SalirReporte]
@@ -168,19 +169,42 @@ def ESReportes(pDicc):
             print("Opción inválida")
     return pDicc
 
-def ESReportes2(pDicc):
+def ESReportePersonalidades(pDicc):
     personalidades={1: "INTJ",2: "INTP",3:"ENTJ",4:"ENTP",5:"INFJ",6:"INFP",7:"ENFJ",8:"ENFP",9:"ISTJ",10:"ISFJ",11:"ESTJ",12:"ESFJ",13:"ISTP",14:"ISFP",15:"ESTP",16:"ESFP"}
     for i in personalidades:
-        print(f"{i}. {personalidades[i]}")
+        esPrimero=True
+        print(f"\n{i}. {personalidades[i]}")
         for j in pDicc:
-            if i in pDicc[j]:
+            if i == pDicc[j][-1]:
+                if esPrimero==True:
+                    print(f" ---Usuarios con personalidad {personalidades[i]} ---\n")
+                    esPrimero=False
                 print("\n"
-                      f" ---Usuarios con personalidad {personalidades[i]} ---\n"
                       f"    cedula: {j}\n"
                       f"    nombre: {pDicc[j][0]}\n"
-                      f"    genero: {pDicc[j][1]}\n"
+                      f"    genero: {'Hombre' if pDicc[j][1] else 'Mujer'}\n"
                       )
-    print("Reporte")
+    print("\n")            
+    return pDicc
+
+def ESPorCategorias(pDicc):
+    categorias={"Analistas": [1,2,3,4],"Diplomaticos": [5,6,7,8],"Centinelas":[9,10,11,12],"Exploradores":[13,14,15,16]}
+    personalidades={1: "INTJ",2: "INTP",3:"ENTJ",4:"ENTP",5:"INFJ",6:"INFP",7:"ENFJ",8:"ENFP",9:"ISTJ",10:"ISFJ",11:"ESTJ",12:"ESFJ",13:"ISTP",14:"ISFP",15:"ESTP",16:"ESFP"}
+    for i in categorias:
+        esPrimero=True
+        print(f"\n{i}")
+        for j in pDicc:
+            if pDicc[j][-1] in categorias[i] :
+                if esPrimero==True:
+                    print(f" ---Usuarios con personalidad tipo {i} ---\n")
+                    esPrimero=False
+                print("\n"
+                      f"    cedula: {j}\n"
+                      f"    nombre: {pDicc[j][0]}\n"
+                      f"    personalidad: {personalidades[pDicc[j][-1]]}\n"
+                      f"    genero: {'Hombre' if pDicc[j][1] else 'Mujer'}\n"
+                      )
+    print("\n")
     return pDicc
 
 def menu():
